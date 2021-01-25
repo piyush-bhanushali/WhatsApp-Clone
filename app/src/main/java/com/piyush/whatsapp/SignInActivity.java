@@ -23,6 +23,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.FirebaseDatabase;
+import com.piyush.whatsapp.Models.Users;
 import com.piyush.whatsapp.databinding.ActivitySignInBinding;
 
 public class SignInActivity extends AppCompatActivity {
@@ -31,6 +33,7 @@ public class SignInActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     FirebaseAuth auth;
     GoogleSignInClient mGoogleSignInClient;
+    FirebaseDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,7 @@ public class SignInActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         auth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
         progressDialog = new ProgressDialog(SignInActivity.this);
         progressDialog.setTitle("Login");
         progressDialog.setMessage("Login to your account");
@@ -128,7 +132,12 @@ public class SignInActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "signInWithCredential:success");
-                            FirebaseUser user = auth.getCurrentUser();
+                            FirebaseUser firebaseUser = auth.getCurrentUser();
+                            Users users = new Users();
+                            users.setUserId(firebaseUser.getUid());
+                            users.setUserName(firebaseUser.getDisplayName());
+                            users.setProfilepic(firebaseUser.getPhotoUrl().toString());
+                            database.getReference().child("Users").child(users.getUserId()).setValue(users);
 
                             Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                             startActivity(intent);
