@@ -17,7 +17,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -137,7 +136,8 @@ public class SignInActivity extends AppCompatActivity {
                             users.setUserId(firebaseUser.getUid());
                             users.setUserName(firebaseUser.getDisplayName());
                             users.setProfilepic(firebaseUser.getPhotoUrl().toString());
-                            database.getReference().child("Users").child(users.getUserId()).setValue(users);
+                            //database.getReference().child("Users").child(users.getUserId(dataSnapshot.getKey())).setValue(users);
+                            database.getReference().child("Users").child(firebaseUser.getUid()).setValue(users);
 
                             Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                             startActivity(intent);
