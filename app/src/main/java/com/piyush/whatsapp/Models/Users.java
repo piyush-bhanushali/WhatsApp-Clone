@@ -12,13 +12,22 @@ public class Users {
         this.lastMessage = lastMessage;
     }
 
-    public Users() {}
+    public Users() {
+    }
 
     //SignUp Constructor
     public Users(String userName, String mail, String password) {
         this.userName = userName;
         this.mail = mail;
         this.password = password;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getProfilepic() {
@@ -51,14 +60,6 @@ public class Users {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getUserId(String key) {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getLastMessage() {
