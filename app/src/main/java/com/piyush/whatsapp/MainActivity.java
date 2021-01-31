@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -45,13 +46,37 @@ public class MainActivity extends AppCompatActivity {
             case R.id.settings:
                 Toast.makeText(this, "Settings Clicked", Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.groupChat:
+                Intent intentGroupChat = new Intent(MainActivity.this, GroupChatActivity.class);
+                startActivity(intentGroupChat);
+                break;
             case R.id.logout:
                 auth.signOut();
                 Intent intent = new Intent(MainActivity.this, SignInActivity.class);
                 startActivity(intent);
+                finish();
                 break;
         }
 
         return true;
+    }
+
+    boolean doubleBackToExitPressedOnce = false;
+    @Override
+    public void onBackPressed() {
+        if(doubleBackToExitPressedOnce){
+            super.onBackPressed();
+            return;
+        }
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
 }
