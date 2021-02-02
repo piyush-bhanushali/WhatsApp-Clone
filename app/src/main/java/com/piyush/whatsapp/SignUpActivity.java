@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
@@ -41,6 +42,18 @@ public class SignUpActivity extends AppCompatActivity {
         binding.btnSingUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(TextUtils.isEmpty(binding.etUserName.getText().toString())){
+                    binding.etUserName.setError("Enter username");
+                    return;
+                }
+                if(TextUtils.isEmpty(binding.etEmail.getText().toString())){
+                    binding.etEmail.setError("Enter email");
+                    return;
+                }
+                if(TextUtils.isEmpty(binding.etPassword.getText().toString())){
+                    binding.etPassword.setError("Enter password");
+                    return;
+                }
                 progressDialog.show();
                 auth.createUserWithEmailAndPassword(
                         binding.etEmail.getText().toString(), binding.etPassword.getText().toString())

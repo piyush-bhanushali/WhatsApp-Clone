@@ -59,8 +59,13 @@ public class SignInActivity extends AppCompatActivity {
         binding.btnSingIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(TextUtils.isEmpty(binding.etEmail.getText()) | TextUtils.isEmpty(binding.etPassword.getText())){
-                    Toast.makeText(SignInActivity.this, "Enter Email and Password", Toast.LENGTH_SHORT).show();
+                if(TextUtils.isEmpty(binding.etEmail.getText())){
+                    binding.etEmail.setError("Enter your email");
+                    return;
+                }
+                if(TextUtils.isEmpty(binding.etPassword.getText())){
+                    binding.etPassword.setError("Enter your password");
+                    return;
                 }
                 else {
                     progressDialog.show();
