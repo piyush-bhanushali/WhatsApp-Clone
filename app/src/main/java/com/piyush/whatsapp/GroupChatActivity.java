@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -77,6 +78,12 @@ public class GroupChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final String message = binding.etMessage.getText().toString();
+
+                if(TextUtils.isEmpty(message)){
+                    binding.etMessage.setError("enter something");
+                    return;
+                }
+
                 final MessageModel model = new MessageModel(senderId, message);
                 model.setTimestamp(new Date().getTime());
                 binding.etMessage.setText("");

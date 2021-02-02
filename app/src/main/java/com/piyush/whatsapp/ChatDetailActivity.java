@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -90,6 +91,12 @@ public class ChatDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 String message = binding.etMessage.getText().toString();
+
+                if(TextUtils.isEmpty(message)){
+                    binding.etMessage.setError("enter something");
+                    return;
+                }
+
                 final MessageModel model = new MessageModel(senderId, message);
                 model.setTimestamp(new Date().getTime());
                 binding.etMessage.setText("");
