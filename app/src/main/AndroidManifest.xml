@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WhatsApp">
+        <activity android:name=".PhoneSignInActivity"></activity>
         <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,9 +20,7 @@
         <activity android:name=".SettingsActivity" />
         <activity android:name=".GroupChatActivity" />
         <activity android:name=".ChatDetailActivity" />
-        <activity android:name=".SignInActivity">
-
-        </activity>
+        <activity android:name=".SignInActivity"></activity>
         <activity android:name=".SignUpActivity" />
         <activity android:name=".MainActivity" />
     </application>
