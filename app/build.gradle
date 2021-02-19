@@ -52,7 +52,7 @@ dependencies {
 
     //country code picker
     implementation 'com.hbb20:ccp:2.4.5'
-
+    //Browser ReCaptcha for OTP
     implementation "androidx.browser:browser:1.2.0"
 
     testImplementation 'junit:junit:4.+'

@@ -3,6 +3,7 @@ package com.piyush.whatsapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,8 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.FirebaseDatabase;
+import com.piyush.whatsapp.Models.Users;
 import com.piyush.whatsapp.databinding.ActivityManageOtpBinding;
 
 import java.util.concurrent.TimeUnit;
@@ -29,6 +32,8 @@ public class ManageOtpActivity extends AppCompatActivity {
     String phonenumber;
     String otpid;
     FirebaseAuth mAuth;
+    FirebaseDatabase database;
+    ProgressDialog progressDialog;
     String TAG = "ManageOtpActivity";
 
     @Override
@@ -40,16 +45,18 @@ public class ManageOtpActivity extends AppCompatActivity {
 
         phonenumber = getIntent().getStringExtra("mobile");
         mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        progressDialog = new ProgressDialog(ManageOtpActivity.this);
+        progressDialog.setTitle("Login");
+        progressDialog.setMessage("Login to your account");
 
         initiateOtp(phonenumber);
 
         binding.btnVerify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(binding.etOtp.getText().toString().isEmpty()){
-                    Toast.makeText(ManageOtpActivity.this, "Field is blank", Toast.LENGTH_SHORT).show();
-                    binding.etOtp.setError("Enter OTP");
-                    return;
+                if(binding.etOtp.getText().toString().isEmpty() || binding.etName.getText().toString().isEmpty()){
+                    Toast.makeText(ManageOtpActivity.this, "Username or OTP is blank", Toast.LENGTH_SHORT).show();
                 }else if(binding.etOtp.getText().toString().length()!=6){
                     Toast.makeText(ManageOtpActivity.this, "Invalid OTP", Toast.LENGTH_SHORT).show();
                     binding.etOtp.setError("Enter Valid OTP");
@@ -64,8 +71,6 @@ public class ManageOtpActivity extends AppCompatActivity {
     }
 
     private void initiateOtp(String phoneNumber) {
-
-        //**********
         PhoneAuthOptions options =
                 PhoneAuthOptions.newBuilder(mAuth)
                         .setPhoneNumber(phoneNumber)       // Phone number to verify
@@ -89,30 +94,6 @@ public class ManageOtpActivity extends AppCompatActivity {
                         })          // OnVerificationStateChangedCallbacks
                         .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
-        //**********
-
-//        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-//                phonenumber,                                // Phone number to verify
-//                60,                                      // Timeout duration
-//                TimeUnit.SECONDS,                           // Unit of timeout
-//                this,                               // Activity (for callback binding)
-//                new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-//
-//                    @Override
-//                    public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-//                        otpid = s;
-//                    }
-//
-//                    @Override
-//                    public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-//                        signInWithPhoneAuthCredential(phoneAuthCredential);
-//                    }
-//
-//                    @Override
-//                    public void onVerificationFailed(@NonNull FirebaseException e) {
-//                        Toast.makeText(ManageOtpActivity.this, TAG + " : "+e.getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                }); // OnVerificationStateChangedCallbacks
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
@@ -124,8 +105,14 @@ public class ManageOtpActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             Toast.makeText(ManageOtpActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
-                            //startActivity(new Intent(ManageOtpActivity.this, MainActivity.class));
-                            //finish();
+
+                            Users user = new Users();
+                            user.setUserName(binding.etName.getText().toString());
+                            String id = task.getResult().getUser().getUid();
+                            database.getReference().child("Users").child(id).setValue(user);
+
+                            startActivity(new Intent(ManageOtpActivity.this, MainActivity.class));
+                            finish();
 
                             //FirebaseUser user = task.getResult().getUser();
                             // ...

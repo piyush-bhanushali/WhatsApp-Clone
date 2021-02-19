@@ -1,30 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ManageOtpActivity">
 
-    <EditText
-        android:id="@+id/etOtp"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Enter OTP here"
-        android:inputType="number"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:padding="15dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp"
+            android:text="Enter OTP for verify your number"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/etName"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:maxLines="1"
+            android:hint="Enter your name"/>
+
+        <EditText
+            android:id="@+id/etOtp"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:focusedByDefault="true"
+            android:focusableInTouchMode="true"
+            android:inputType="number"
+            android:maxLength="6"
+            android:maxLines="1"
+            android:focusable="true"
+            android:hint="Enter OTP here"/>
+
+    </LinearLayout>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/btnVerify"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
         android:text="VERIFY AND SIGNIN"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etOtp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        app:cornerRadius="4dp" />
+
+</RelativeLayout>
