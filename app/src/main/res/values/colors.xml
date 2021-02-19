@@ -21,5 +21,6 @@
     <color name="settingsIconColor">#0E8374</color>
     <color name="grayBackground">#BCBCBC</color>
     <color name="chatbackground">#AAAAAA</color>
+    <color name="transparent">#00000000</color>
 
 </resources>

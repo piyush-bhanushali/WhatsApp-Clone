@@ -97,6 +97,13 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
+        binding.signUpPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SignInActivity.this, PhoneSignInActivity.class));
+            }
+        });
+
         binding.btnGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
