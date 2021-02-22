@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.piyush.whatsapp.databinding.ActivityPhoneSignInBinding;
 
 public class PhoneSignInActivity extends AppCompatActivity {
@@ -30,15 +31,22 @@ public class PhoneSignInActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         binding.ccp.registerCarrierNumberEditText(binding.etPhone);
-        findViewById(R.id.btnNext).setOnClickListener(new View.OnClickListener() {
+        binding.btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(PhoneSignInActivity.this, "Clicked...", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(PhoneSignInActivity.this, ManageOtpActivity.class);
                 intent.putExtra("mobile",binding.ccp.getFullNumberWithPlus().replace(" ",""));
                 startActivity(intent);
             }
         });
+
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+            Intent intent = new Intent(PhoneSignInActivity.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }
+
     }
 
     @Override

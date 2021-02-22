@@ -1,11 +1,13 @@
 package com.piyush.whatsapp;
 
+import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -50,7 +52,35 @@ public class ManageOtpActivity extends AppCompatActivity {
         progressDialog.setTitle("Login");
         progressDialog.setMessage("Login to your account");
 
-        initiateOtp(phonenumber);
+        //Non Editable OTP
+        binding.etOtp.setEnabled(false);
+        binding.btnGetOtp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(binding.etName.getText().toString().isEmpty()){
+                    Toast.makeText(ManageOtpActivity.this, "Please Enter Your Username", Toast.LENGTH_SHORT).show();
+                }else{
+
+                    //Timer
+                    new CountDownTimer(60000,1000){
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+                            binding.btnGetOtp.setText("RESEND "+millisUntilFinished/1000);
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            binding.btnGetOtp.setText("RESEND");
+                            binding.btnGetOtp.setEnabled(true);
+                        }
+                    }.start();
+
+                    initiateOtp(phonenumber);
+                    binding.etOtp.setEnabled(true);
+                    binding.btnGetOtp.setEnabled(false);
+                }
+            }
+        });
 
         binding.btnVerify.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,9 +98,16 @@ public class ManageOtpActivity extends AppCompatActivity {
             }
         });
 
+        if (mAuth.getCurrentUser()!=null){
+            Intent intent = new Intent(ManageOtpActivity.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void initiateOtp(String phoneNumber) {
+        progressDialog.show();
         PhoneAuthOptions options =
                 PhoneAuthOptions.newBuilder(mAuth)
                         .setPhoneNumber(phoneNumber)       // Phone number to verify
@@ -80,6 +117,7 @@ public class ManageOtpActivity extends AppCompatActivity {
                             @Override
                             public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                                 otpid = s;
+                                progressDialog.dismiss();
                             }
 
                             @Override
@@ -113,6 +151,7 @@ public class ManageOtpActivity extends AppCompatActivity {
 
                             startActivity(new Intent(ManageOtpActivity.this, MainActivity.class));
                             finish();
+                            progressDialog.dismiss();
 
                             //FirebaseUser user = task.getResult().getUser();
                             // ...
